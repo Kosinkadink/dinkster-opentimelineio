@@ -9,11 +9,19 @@ The PyPI distribution is `dinkster-opentimelineio`; Python code still uses
 
 `source.json` records the exact upstream repository, commit, original version
 and downstream distribution version. The initial source is upstream's
-`0.19.0.dev1` snapshot, not an upstream stable release. Its downstream version
-is `0.19.0.post1`. For a new upstream version X.Y.Z use X.Y.Z.post1; increment
-the post number for subsequent snapshots or packaging fixes of that version.
-Post releases sort after X.Y.Z and have no PyPI-incompatible local version label.
+`0.19.0.dev1` snapshot, not an upstream stable release. Our distribution uses
+normal versions starting at `0.19.0`, not post releases. The major.minor tracks
+upstream's major.minor; our patch digit increments for every repack of a newer
+upstream commit (`0.19.1`, `0.19.2`, ...), independently of upstream patch numbers.
+Packaging corrections also need a new downstream patch version; never reuse a
+published version. Versions have no PyPI-incompatible local version label.
 The Git tag is `v` followed by the exact downstream version in `source.json`.
+
+| Identity | Initial release value |
+| --- | --- |
+| Distribution `dinkster-opentimelineio` | `0.19.0` |
+| Runtime `opentimelineio.__version__` | `0.19.0.dev1` |
+| Upstream commit | `4524367491df94841cbf48ade184b818d2dc6354` |
 
 `importlib.metadata.version('dinkster-opentimelineio')` returns the downstream
 distribution version. `opentimelineio.__version__` deliberately retains the
@@ -62,7 +70,7 @@ so repair and testing behavior stay synchronized.
 5. Inspect the tag run, GitHub release assets and PyPI files. Download binary
    wheels for each supported Python/platform, then test native imports.
    Never replace a published version; fix the pin/build and increment the
-   downstream post number for the next release.
+   downstream patch number for the next release.
 
 The pinned upstream setup.py lacks a `win-arm64` CMake generator mapping.
 Source preparation adds `win-arm64: ARM64` beside its existing x64 mapping;
