@@ -25,6 +25,7 @@ def prepare(source: Path) -> None:
         "    **PROJECT_METADATA\n)": (
             f'    **dict(PROJECT_METADATA, version="{pin["version"]}")\n)'
         ),
+        '    "win-amd64": "x64",': ('    "win-amd64": "x64",\n    "win-arm64": "ARM64",'),
     }
     if original.count(f'"version": "{pin["upstream_version"]}"') != 1:
         raise ValueError("Upstream runtime version differs from source.json")
