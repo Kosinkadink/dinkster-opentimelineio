@@ -22,8 +22,12 @@ def prepare(source: Path) -> None:
     original = path.read_text(encoding="utf-8")
     replacements = {
         "name='OpenTimelineIO'": "name='dinkster-opentimelineio'",
-        f'"version": "{pin["upstream_version"]}"': f'"version": "{pin["version"]}"',
+        "    **PROJECT_METADATA\n)": (
+            f'    **dict(PROJECT_METADATA, version="{pin["version"]}")\n)'
+        ),
     }
+    if original.count(f'"version": "{pin["upstream_version"]}"') != 1:
+        raise ValueError("Upstream runtime version differs from source.json")
     updated = original
     for old, new in replacements.items():
         if updated.count(old) != 1:

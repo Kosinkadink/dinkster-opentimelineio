@@ -76,9 +76,10 @@ jobs:
           import importlib.metadata
           from pathlib import Path
           import opentimelineio
-          version = json.loads(Path('source.json').read_text())['version']
-          assert importlib.metadata.version('dinkster-opentimelineio') == version
-          assert opentimelineio.__version__ == version
+          pin = json.loads(Path('source.json').read_text())
+          version = importlib.metadata.version('dinkster-opentimelineio')
+          assert version == pin['version']
+          assert opentimelineio.__version__ == pin['upstream_version']
           print(opentimelineio.__version__)
           PY
       - uses: actions/upload-artifact@v4
